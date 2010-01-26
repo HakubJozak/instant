@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  card_id: 1
+  deck_id: 1
+  count: 1
+
+two:
+  card_id: 1
+  deck_id: 1
+  count: 1

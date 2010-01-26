@@ -1,0 +1,5 @@
+<% form_for :deck, :url => { :action => :create } do |f| -%>
+<em><%= f.error_messages -%></em>
+DeckCheck URL <%= f.text_field :url %>
+<%= f.submit 'Create PDF' %>
+<% end -%>

@@ -1,0 +1,22 @@
+<h2>Deck Information</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <td><%= @deck.name %></td>
+  </tr>
+  <tr>
+    <th>Permalink</th>
+    <td><%= link_to(deck_url(@deck))  %></td>
+  </tr>
+  <tr>
+    <th>Number of cards</th>
+    <td><%= @deck.cards_amount %></td>
+  </tr>
+  <tr>
+    <th>Download in PDF</th>
+    <td><%= link_to('Download PDF', deck_url(@deck, :format => :pdf)) %></td>
+  </tr>
+</table>
+
+<h2>Cards</h2>
+<%= render :partial => "cards/cards", :object => @deck.cards %>

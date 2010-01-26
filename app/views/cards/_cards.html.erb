@@ -1,0 +1,9 @@
+<table>
+<% cards.each do |card| -%>
+ <tr>
+   <td>
+     <%= render :partial => "cards/card", :object => card %>  
+   </td>
+ </tr>
+<% end -%>
+</table>
