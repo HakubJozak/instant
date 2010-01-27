@@ -1,0 +1,3 @@
+use delayed job to download the cards
+use HPricot to parse HTML
+

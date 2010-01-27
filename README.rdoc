@@ -1,0 +1,10 @@
+= Instant
+
+"Instant" is a simple Ruby on Rails application employing Prawn and Net::HTTP that simplifies printing of the Magic the Gathering proxy decks. Live version is going to be online soon.
+
+= Requirements
+* Rubygems
+* Prawl
+
+= Future
+* Drag&Drop deck builder
