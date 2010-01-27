@@ -5,23 +5,31 @@ class DecksController < ApplicationController
   end
 
   def create
-    @deck = Deck.new(params[:deck])
+    if (params[:deck])
+      @deck = Deck.new(params[:deck])
 
-    if @deck.save
-      flash[:info] = 'Deck succesfully created'
-      redirect_to :action => :show, :id => @deck
+      if @deck.save
+        flash[:info] = 'Deck succesfully created'
+        redirect_to :action => :show, :id => @deck
+      else
+        redirect_to :action => :new
+      end
     else
-      redirect_to :action => :new
+      @deck = Deck.create_from_cardslist(params[:cards])
+      redirect_to :action => :show, :id => @deck.id
     end
+
   end
 
   def show
     @deck = Deck.find(params[:id])
-    @pdf = DeckPrinter.print(@deck)
 
     respond_to do |format|
       format.html
-      format.pdf { send_data( @pdf, :filename => "deck.pdf") }
+      format.pdf do 
+        @pdf = DeckPrinter.print(@deck)
+        send_data( @pdf, :filename => "deck.pdf") 
+      end
     end
   end
 end

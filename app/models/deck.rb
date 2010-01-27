@@ -3,10 +3,22 @@ class Deck < ActiveRecord::Base
 
   has_many :card_choices
   has_many :cards, :through => :card_choices
-  validates_format_of :url, :with => DECK_CHECK_FORMAT
+  validates_format_of :url, :with => DECK_CHECK_FORMAT, :if => :url
+
+  def self.create_from_cardslist(list = "")
+    deck = Deck.new(:name => "Hand-made deck")
+    deck.save!
+
+    list.lines do |name|
+      card = Card.find_or_create_by_name(name.strip)
+      deck.card_choices.create(:card => card, :count =>1 )
+    end
+
+    deck
+  end
 
   def after_create
-    DeckCheck.download_deck(self)
+    DeckCheck.download_deck(self) if self.url
   end
 
   def cards_amount

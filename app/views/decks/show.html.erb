@@ -19,4 +19,9 @@
 </table>
 
 <h2>Cards</h2>
-<%= render :partial => "cards/cards", :object => @deck.cards %>
+<table id="cards">
+<% card_rows(@deck.cards) do |card| -%>
+   <%= render :partial => "cards/card", :object => card %>  
+<% end -%>
+</table>
+

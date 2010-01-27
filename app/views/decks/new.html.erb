@@ -1,5 +1,14 @@
 <% form_for :deck, :url => { :action => :create } do |f| -%>
 <em><%= f.error_messages -%></em>
 DeckCheck URL <%= f.text_field :url %>
-<%= f.submit 'Create PDF' %>
+<%= f.submit 'Create from URL' %>
 <% end -%>
+
+<p>One line for each card</p>
+
+<% form_tag :action => :create  do  -%>
+<%= text_area_tag "cards", nil, :cols => 60, :rows => 20 %>
+<br/>
+<%= submit_tag 'Create from cards list' %>
+<% end -%>
+
