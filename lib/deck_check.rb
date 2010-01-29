@@ -18,12 +18,12 @@ module DeckCheck
     end
   end
 
-  def self.download_image(link)
+  def self.get_image_url(link)
     info_page = Net::HTTP.get(URI.parse(get_real_location(link)))
 
     r = Regexp.new("<img src=\"(/scans/.*)\".*/>")
     info_page.scan(r) do |image_uri|
-      return Net::HTTP.get(URI.parse("http://magiccards.info" + image_uri[0]))
+      return URI.parse("http://magiccards.info" + image_uri[0])
     end
 
     nil

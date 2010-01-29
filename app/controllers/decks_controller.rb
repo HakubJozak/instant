@@ -1,7 +1,7 @@
 class DecksController < ApplicationController
 
   def new
-    @deck = Deck.new(:url => "http://www.deckcheck.net/deck.php?id=31736")
+    @deck = Deck.new #(:url => "http://www.deckcheck.net/deck.php?id=31736")
   end
 
   def create
