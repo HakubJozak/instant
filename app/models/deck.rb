@@ -26,7 +26,7 @@ class Deck < ActiveRecord::Base
   end
 
   def add_card(count, params)
-    card = Card.find_by_name(params[:name]) || Card.new(params)
+    card = Card.find_by_name(params[:name]) || Card.create(params)
     self.card_choices.create(:count => count, :card => card)
   end
 

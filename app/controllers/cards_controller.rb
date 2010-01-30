@@ -8,8 +8,8 @@ class CardsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.jpg { render :text => @card.image }
-#      format.jpg { redirect_to @card.url }
+#      format.jpg { render :text => @card.image }
+      format.jpg { redirect_to @card.image_url }
     end
   end
 
