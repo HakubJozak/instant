@@ -46,6 +46,11 @@ class DecksControllerTest < ActionController::TestCase
           10.times { @deck.card_choices.create( :card => Factory.create(:card), :count => 2 ) }
         end
 
+        should "show list page" do
+          get :index
+          assert_response :success
+        end
+
         should "show card table" do
           get :show, :id => @deck.id
           assert_response :success

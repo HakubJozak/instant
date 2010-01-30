@@ -1,0 +1,8 @@
+HTTP/1.1 302 Found
+Location: /arb/en/92.html
+Content-type: text/html
+Content-Length: 0
+Connection: close
+Date: Sat, 30 Jan 2010 12:16:42 GMT
+Server: Lighttpd | Joyent
+

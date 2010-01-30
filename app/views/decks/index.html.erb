@@ -1,0 +1,12 @@
+<%=
+ collection_table Deck.find(:all) do |t|
+    t.header :name
+    t.header :url
+    t.header :download
+    t.rows.alternate = :odd
+    t.rows.each do |row, deck, index|
+      row.download link_to("PDF", deck_url(deck, :format => :pdf))
+      row.name link_to(deck.name, deck_url(deck))
+    end
+end
+%>

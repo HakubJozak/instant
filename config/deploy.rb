@@ -22,6 +22,7 @@ server "siven.onesim.net", :app, :web, :db, :primary => true
 
    desc "Symlink shared configs and folders on each release."
    task :symlink_shared do
+    run "ln -s #{shared_path}/log #{current_path}/log"
    end
 
    after "deploy:update_code", "deploy:symlink_shared"

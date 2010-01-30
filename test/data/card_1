@@ -1,0 +1,7 @@
+HTTP/1.1 301 Moved Permanently
+Location: http://magiccards.info/query.php?cardname=Maelstrom%20Pulse
+Content-Length: 0
+Connection: close
+Date: Sat, 30 Jan 2010 12:16:36 GMT
+Server: Lighttpd | Joyent
+

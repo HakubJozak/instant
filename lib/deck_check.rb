@@ -1,5 +1,3 @@
-#!/usr/bin/ruby
-
 require 'net/http'
 require 'uri'
 
@@ -19,23 +17,25 @@ module DeckCheck
   end
 
   def self.get_image_url(link)
-    info_page = Net::HTTP.get(URI.parse(get_real_location(link)))
+    info_page = Net::HTTP.get(URI.parse(link))
 
     r = Regexp.new("<img src=\"(/scans/.*)\".*/>")
     info_page.scan(r) do |image_uri|
-      return URI.parse("http://magiccards.info" + image_uri[0])
+      return "http://magiccards.info" + image_uri[0]
     end
+  end
 
-    nil
+  def self.download_image(link)
+    Net::HTTP.get(URI.parse(link))
   end
 
 
   private
 
   def self.get_real_location(link)
-      response = Net::HTTP.get_response(URI.parse(link))
-      response = Net::HTTP.get_response(URI.parse(response['Location']))
-      real_location = "http://magiccards.info" + response['Location']
+    response = Net::HTTP.get_response(URI.parse(link))
+    response = Net::HTTP.get_response(URI.parse(response['Location']))
+    real_location = "http://magiccards.info" + response['Location']
   end
 
 

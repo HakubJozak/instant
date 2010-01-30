@@ -19,6 +19,10 @@ class DecksController < ApplicationController
       redirect_to :action => :show, :id => @deck.id
     end
 
+  rescue => e
+    Rails.logger.error("Failed to create deck information: #{e}")
+    flash[:error] = "Failed to create deck information"
+    redirect_to :action => :new
   end
 
   def show

@@ -4,6 +4,12 @@
 </head>
 <body>
 <center>
+
+<span>
+  <%= link_to "Create deck", new_deck_url -%>
+  <%= link_to "List decks", decks_url -%>
+</span>
+
 <h1>Instant</h1>
 <%= yield %>
 </center>
