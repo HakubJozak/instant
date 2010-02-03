@@ -1,6 +1,6 @@
 <h2>Create deck from URL</h2>
 <% form_tag :action => :create do %>
-DeckCheck URL <%= text_field_tag :url, nil %>
+DeckCheck URL <%= text_field_tag :url, @url %>
 <%= submit_tag 'Create from URL' %>
 <% end -%>
 
@@ -10,7 +10,10 @@ DeckCheck URL <%= text_field_tag :url, nil %>
 <p><em>one line for each cards</em></p>
 
 <% form_tag :action => :create  do  -%>
-<%= text_area_tag "cards", nil, :cols => 60, :rows => 20 %>
+<%= label_for(:name) -%>
+<%= text_field_tag :name, "Hand-made deck" %>
+<br/>
+<%= text_area_tag "cards", @cards, :cols => 60, :rows => 20 %>
 <br/>
 <%= submit_tag 'Create from cards list' %>
 <% end -%>
