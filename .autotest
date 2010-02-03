@@ -1,1 +1,5 @@
-require "redgreen/autotest"
+# -*- ruby -*-
+
+require 'autotest-inotify'
+require 'redgreen/autotest'
+require "test_notifier/autotest"

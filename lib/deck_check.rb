@@ -6,17 +6,60 @@ module DeckCheck
 
   CARDS_REGEXP = Regexp.new("<p>([0-9])+ <a href=\"(.*)\" onmouse.*>(.*)</a></p>")
   NAME_REGEXP = Regexp.new(".*<h1>(.*)<span.*</h1>.*")
+  IMAGE_REGEXP = Regexp.new("<img src=\"(/scans/.*)\".*/>")
+  CARD_NAME_REGEXP = Regexp.new('<h1><a href=.*>(.*)</a>.*</h1>')
+
+  # returns ready-to-save card
+  def self.download_card_by_name(name)
+    download_card_by_url(card_url(name))
+  end
+
+  def self.download_card_by_url(url)
+    url, page = goto_url(url)
+
+    card  = Card.new do |c|
+      c.url  = url
+      c.name = page.scan(CARD_NAME_REGEXP)[0][0]
+      c.image_url = "http://magiccards.info" + page.scan(IMAGE_REGEXP)[0][0]
+    end
+
+    card
+  end
 
   def self.download_deck(deck)
-    page = Net::HTTP.get(URI.parse(deck.url))
+    page = goto_url(deck.url)
     deck.name = page.match(NAME_REGEXP)[1].chop
-   
+    
     page.scan(CARDS_REGEXP) do |count,link, name|
       deck.add_card( count.to_i,  { :name => name, :url => link })
     end
   end
 
+  # TODO - limit
+  def self.goto_url(url)
+    response = Net::HTTP.get_response(URI.parse(url))
+    status = response.code.to_i
+    
+    if status >= 300 and status < 400
+      url = response['Location']
+      # TODO - put general url beggining instead
+      url = "http://magiccards.info" + url unless url.start_with?('http://')
+      goto_url(url)
+    else
+      return url, response.body
+    end
+  end
+
+  protected
+
+  def self.card_url(name)
+    "http://www.magiccards.info/query.php?cardname=#{URI.escape(name)}"
+  end
+
 end
+
+
+
 
 
 
