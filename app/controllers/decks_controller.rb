@@ -1,19 +1,25 @@
 class DecksController < ApplicationController
 
   def new
+    @deck = Deck.new(:name => "Hand-made deck")
   end
 
   def create
-    if (params[:url])
-      create_by_url(params[:url])
-    elsif not params[:cards].empty?
-      @deck = Deck.create_from_cardslist(params[:cards])
-      redirect_to :action => :show, :id => @deck.id
-    end
+    [ :url, :cards_list ].each { |key| params.delete(key) if params[key].blank? }
 
+    @deck = Deck.new(params[:deck])
+
+    if @deck.save
+      flash[:info] = 'Deck succesfully created'
+      #Delayed::Job.enqueue DownloadDeckJob.new(self.id)
+      redirect_to deck_url(@deck)
+    else
+      render :action => "new"
+    end
+    
   rescue => e
-    Rails.logger.error("Failed to create deck information: #{e}")
-    flash[:error] = "Failed to create deck"
+    Rails.logger.error("Failed to create deck: #{e}")
+    flash[:error] = "Failed to create deck #{e}"
     redirect_to :action => :new
   end
 
@@ -29,17 +35,12 @@ class DecksController < ApplicationController
     end
   end
 
-  protected
-
-  def create_by_url(url)
-    @deck = Deck.new(:url => url)
-    @deck = DeckCheck.download_deck(url)
-
-    if @deck.save
-      flash[:info] = 'Deck succesfully created'
-      redirect_to :action => :show, :id => @deck
-    else
-      redirect_to :action => :new
-    end
+  # TODO - remove this
+  def refresh
+    @deck = Deck.find(params[:id])
+    @deck.prepare!
+    redirect_to url_for(@deck)
   end
+
+
 end

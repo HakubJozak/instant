@@ -16,6 +16,11 @@
     <th>Download in PDF</th>
     <td><%= link_to('Download PDF', deck_url(@deck, :format => :pdf)) %></td>
   </tr>
+  <tr>
+    <th>Refresh cards</th>
+    <td><%= link_to('Refresh', "/decks/refresh/#{@deck.id}") %></td>
+  </tr>
+
 </table>
 
 <h2>Cards</h2>

@@ -5,7 +5,7 @@ class Card < ActiveRecord::Base
   has_many :card_choices
   has_many :decks, :through => :card_choices
 
-  validates_presence_of :name, :url, :image_url
+  validates_presence_of :name, :url
 
   def self.find_or_create_by_name(name)
     unless card = find_by_name(name)

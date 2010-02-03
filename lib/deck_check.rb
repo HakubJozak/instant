@@ -26,10 +26,12 @@ module DeckCheck
     card
   end
 
-  def self.download_deck(url)
-    page = goto_url(url)
-    deck = Deck.new(:url => url, :name => page.match(DECK_NAME_REGEXP)[1].chop)
-    
+  def self.update_deck(deck)
+    raise "URL not set for deck" unless deck.url
+
+    deck.url, page = goto_url(deck.url)
+    deck.name = page.match(DECK_NAME_REGEXP)[1].chop
+
     page.scan(CARDS_REGEXP) do |count,link, name|
       deck.add_card( count.to_i,  { :name => name, :url => link })
     end

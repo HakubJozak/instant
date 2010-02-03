@@ -27,6 +27,12 @@ class DeckCheckTest < ActiveSupport::TestCase
       card = DeckCheck.download_card_by_url( 'http://www.magiccards.info/query.php?cardname=Martyr%20of%20Sands')
       assert_equal_cards Factory.build(:martyr_of_sands), card
     end
+
+    should "download deck information url" do
+      d = Factory.create(:deck)
+      DeckCheck.update_deck(d)
+      assert_equal 26, d.cards.size
+    end
   end
 
   private 

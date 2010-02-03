@@ -15,15 +15,13 @@ class DecksControllerTest < ActionController::TestCase
       post :create, :deck => Factory.attributes_for(:deck)
       created = assigns(:deck)
       assert_not created.new_record?
-      assert_redirected_to deck_url(created.id)
+      assert_redirected_to deck_url(created)
     end
 
     should "create the deck from card list" do
-      post :create, :cards => @cards
+      post :create, :deck => { :name => 'Some name' }, :cards => @cards
       deck = assigns(:deck)
-
-      assert_not_nil deck
-      assert_equal 3, deck.cards.size
+      assert_not deck.ready?
       assert_redirected_to :action => :show, :controller => :decks, :id => deck.id
     end
 
@@ -33,12 +31,6 @@ class DecksControllerTest < ActionController::TestCase
       should "see the deck" do
         get :show, :id => @deck.id
         assert_response :success
-      end
-
-      should "download PDF" do
-	# get :show, :id => @deck.id, :format => :pdf
-        # assert_not_nil assigns(:pdf)
-        # assert_response :success
       end
 
       context "with many cards" do
@@ -55,8 +47,7 @@ class DecksControllerTest < ActionController::TestCase
           get :show, :id => @deck.id
           assert_response :success
           assert_select "table#cards" do
-            assert_select "tr", 12
-            assert_select "td", 36
+            assert_select "td.card", 10
           end
         end
       end
