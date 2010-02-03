@@ -7,9 +7,14 @@ class Card < ActiveRecord::Base
 
   validates_presence_of :name, :url
 
+  def before_validation_on_create
+    self.url ||= DeckCheck.card_url(self.name)
+  end
+
   def self.find_or_create_by_name(name)
     unless card = find_by_name(name)
-      card = DeckCheck.download_card_by_name(name)
+      card = create!(:name => name)
+      DeckCheck.update_card(card)
       card.save
     end
     

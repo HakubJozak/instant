@@ -1,20 +1,21 @@
-<% form_for :deck, @deck, :url => { :action => :create } do |f| %>
-
 <span class="error"><%= error_messages_for(:deck) %></span>
 
 <h2>Create deck from URL</h2>
-DeckCheck URL <%= f.text_field :url %>
-<%= f.submit 'Create from URL' %>
+<% form_for :deck, @deck, :url => { :action => :create } do |f| %>
+  DeckCheck URL:
+  <%= f.text_field :url %>
+  <%= f.submit 'Create from URL' %>
+<% end -%>
 
-<br/>
+<hr/>
 
 <h2>Create deck from card list</h2>
 <p><em>one line for each cards</em></p>
+<% form_for :deck, @deck, :url => { :action => :create } do |f| %>
 Name: <%= f.text_field :name %>
 <br/>
 <%= f.text_area :cards_list, :cols => 60, :rows => 20 %>
 <br/>
 <%= f.submit 'Create from cards list' %>
-
 <% end -%>
 

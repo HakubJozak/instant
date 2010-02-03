@@ -9,21 +9,10 @@ module DeckCheck
   IMAGE_REGEXP = Regexp.new("<img src=\"(/scans/.*)\".*/>")
   CARD_NAME_REGEXP = Regexp.new('<h1><a href=.*>(.*)</a>.*</h1>')
 
-  # returns ready-to-save card
-  def self.download_card_by_name(name)
-    download_card_by_url(card_url(name))
-  end
-
-  def self.download_card_by_url(url)
-    url, page = goto_url(url)
-
-    card  = Card.new do |c|
-      c.url  = url
-      c.name = page.scan(CARD_NAME_REGEXP)[0][0]
-      c.image_url = "http://magiccards.info" + page.scan(IMAGE_REGEXP)[0][0]
-    end
-
-    card
+  def self.update_card(card)
+    card.url, page = goto_url(card.url)
+    card.name = page.scan(CARD_NAME_REGEXP)[0][0]
+    card.image_url = "http://magiccards.info" + page.scan(IMAGE_REGEXP)[0][0]
   end
 
   def self.update_deck(deck)

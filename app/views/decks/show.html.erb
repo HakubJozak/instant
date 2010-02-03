@@ -4,6 +4,12 @@
     <th>Name</th>
     <td><%= @deck.name %></td>
   </tr>
+
+  <tr>
+    <th>DeckCheck</th>
+    <td><%= @deck.url %></td>
+  </tr>
+
   <tr>
     <th>Permalink</th>
     <td><%= link_to(deck_url(@deck))  %></td>

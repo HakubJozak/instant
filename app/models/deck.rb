@@ -7,9 +7,14 @@ class Deck < ActiveRecord::Base
 
   has_many :card_choices
   has_many :cards, :through => :card_choices
-  validates_format_of :url, :with => DECK_CHECK_FORMAT, :if => Proc.new { |d| not d.url.blank? }
-  validates_presence_of :name, :if => Proc.new { |d| d.url.blank? }
 
+  validates_format_of :url, :with => DECK_CHECK_FORMAT, :if => Proc.new { |d| not d.url.blank? }
+  validate :must_be_either_cards_or_url
+  
+  def must_be_either_cards_or_url
+    errors.add_to_base("Specify either name and card list or URL to create a deck.") if name.blank? and url.blank?
+  end
+  
   def ready?
     self.ready > 0
   end
@@ -20,7 +25,7 @@ class Deck < ActiveRecord::Base
   end
 
   def add_card(count, params)
-    card = Card.find_by_name(params[:name]) || Card.create!(params)
+    card = Card.find_or_create_by_name(params[:name])
     self.card_choices.create(:count => count, :card => card)
   end
 
@@ -49,6 +54,15 @@ class Deck < ActiveRecord::Base
       card = Card.find_or_create_by_name(card_name.strip)
       card_choices.create(:card => card, :count =>1 )
     end    
+  end
+
+  def self.find_or_create_by_name(name)
+    unless card = find_by_name(name)
+      card = Card.create(:name => name)
+      DeckCheck.update_card(card)
+    end
+
+    card
   end
 
 end

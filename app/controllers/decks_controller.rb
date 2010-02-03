@@ -1,12 +1,10 @@
 class DecksController < ApplicationController
 
   def new
-    @deck = Deck.new(:name => "Hand-made deck")
+    @deck = Deck.new(:name => "Hand-made deck", :url => 'http://www.deckcheck.net/deck.php?id=32102')
   end
 
   def create
-    [ :url, :cards_list ].each { |key| params.delete(key) if params[key].blank? }
-
     @deck = Deck.new(params[:deck])
 
     if @deck.save

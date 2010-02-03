@@ -18,13 +18,9 @@ class DeckCheckTest < ActiveSupport::TestCase
       assert_equal stable, url
     end
 
-    should "download card by name and url" do
-      card = DeckCheck.download_card_by_name('Martyr of Sands')
-      assert_equal_cards Factory.build(:martyr_of_sands), card
-    end
-
-    should "download card by url" do
-      card = DeckCheck.download_card_by_url( 'http://www.magiccards.info/query.php?cardname=Martyr%20of%20Sands')
+    should "update card by url" do
+      card = Card.new(:url => 'http://www.magiccards.info/query.php?cardname=Martyr%20of%20Sands')
+      DeckCheck.update_card(card)
       assert_equal_cards Factory.build(:martyr_of_sands), card
     end
 
