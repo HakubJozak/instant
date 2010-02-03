@@ -9,8 +9,6 @@ set :user, "kuba"
 set :deploy_to, "/home/kuba/instant"
 set :use_sudo, false
 
-
-#server "praha.inexsda.cz", :app, :web, :db, :primary => true
 server "siven.onesim.net", :app, :web, :db, :primary => true
 
 
@@ -22,7 +20,7 @@ server "siven.onesim.net", :app, :web, :db, :primary => true
 
    desc "Symlink shared configs and folders on each release."
    task :symlink_shared do
-    run "ln -s #{shared_path}/log #{current_path}/log"
+#    run "ln -s #{shared_path}/log #{current_path}/log"
    end
 
    after "deploy:update_code", "deploy:symlink_shared"
