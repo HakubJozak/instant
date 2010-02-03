@@ -28,7 +28,7 @@
     <td><%= link_to('Refresh', "/decks/refresh/#{@deck.id}") %></td>
   </tr>
 
-  <%= remote_function(:update => "options",  :url => { :action => :update_options }) %>
+  <% remote_function(:update => "options",  :url => { :action => :update_options }) %>
  <!--  periodically_call_remote(:url => 'update', :frequency => '5', :update => 'ticker') -->
 
 </table>
