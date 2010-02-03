@@ -51,8 +51,12 @@ class Deck < ActiveRecord::Base
 
   def add_cards_by_list
     cards_list.lines do |card_name|
-      card = Card.find_or_create_by_name(card_name.strip)
-      card_choices.create(:card => card, :count =>1 )
+      begin
+        card = Card.find_or_create_by_name(card_name.strip) 
+        card_choices.create(:card => card, :count =>1 )
+      rescue
+        errors.add_to_base("Card '#{name}' not found")
+      end
     end    
   end
 
