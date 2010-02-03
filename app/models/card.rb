@@ -6,6 +6,15 @@ class Card < ActiveRecord::Base
   has_many :decks, :through => :card_choices
 
   validates_presence_of :name, :url, :image_url
+
+  def self.find_or_create_by_name(name)
+    unless card = find_by_name(name)
+      card = DeckCheck.download_card_by_name(name)
+      card.save
+    end
+    
+    card
+  end
   
   def image
     self.image = read_attribute(:image) || download_image

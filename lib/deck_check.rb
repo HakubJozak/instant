@@ -5,7 +5,7 @@ require 'uri'
 module DeckCheck
 
   CARDS_REGEXP = Regexp.new("<p>([0-9])+ <a href=\"(.*)\" onmouse.*>(.*)</a></p>")
-  NAME_REGEXP = Regexp.new(".*<h1>(.*)<span.*</h1>.*")
+  DECK_NAME_REGEXP = Regexp.new(".*<h1>(.*)<span.*</h1>.*")
   IMAGE_REGEXP = Regexp.new("<img src=\"(/scans/.*)\".*/>")
   CARD_NAME_REGEXP = Regexp.new('<h1><a href=.*>(.*)</a>.*</h1>')
 
@@ -26,16 +26,16 @@ module DeckCheck
     card
   end
 
-  def self.download_deck(deck)
-    page = goto_url(deck.url)
-    deck.name = page.match(NAME_REGEXP)[1].chop
+  def self.download_deck(url)
+    page = goto_url(url)
+    deck = Deck.new(:url => url, :name => page.match(DECK_NAME_REGEXP)[1].chop)
     
     page.scan(CARDS_REGEXP) do |count,link, name|
       deck.add_card( count.to_i,  { :name => name, :url => link })
     end
   end
 
-  # TODO - limit
+  # TODO - limit number of redirects
   def self.goto_url(url)
     response = Net::HTTP.get_response(URI.parse(url))
     status = response.code.to_i

@@ -1,20 +1,12 @@
 class DecksController < ApplicationController
 
   def new
-    @deck = Deck.new #(:url => "http://www.deckcheck.net/deck.php?id=31736")
   end
 
   def create
-    if (params[:deck])
-      @deck = Deck.new(params[:deck])
-
-      if @deck.save
-        flash[:info] = 'Deck succesfully created'
-        redirect_to :action => :show, :id => @deck
-      else
-        redirect_to :action => :new
-      end
-    else
+    if (params[:url])
+      create_by_url(params[:url])
+    elsif not params[:cards].empty?
       @deck = Deck.create_from_cardslist(params[:cards])
       redirect_to :action => :show, :id => @deck.id
     end
@@ -34,6 +26,20 @@ class DecksController < ApplicationController
         @pdf = DeckPrinter.print(@deck)
         send_data( @pdf, :filename => "deck.pdf") 
       end
+    end
+  end
+
+  protected
+
+  def create_by_url(url)
+    @deck = Deck.new(:url => url)
+    @deck = DeckCheck.download_deck(url)
+
+    if @deck.save
+      flash[:info] = 'Deck succesfully created'
+      redirect_to :action => :show, :id => @deck
+    else
+      redirect_to :action => :new
     end
   end
 end

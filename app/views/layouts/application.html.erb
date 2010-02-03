@@ -1,17 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
-<title>Instant</title>
-</head>
-<body>
-<center>
+    <title><%= h(yield(:title) || "Untitled") %></title>
+    <%= stylesheet_link_tag 'application' %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+    <div id="container">
+      <center>
+	<span>
+	  <%= link_to "Create deck", new_deck_url -%>
+	  <%= link_to "List decks", decks_url -%>
+	</span>
 
-<span>
-  <%= link_to "Create deck", new_deck_url -%>
-  <%= link_to "List decks", decks_url -%>
-</span>
+	<br/><br/>
 
-<h1>Instant</h1>
-<%= yield %>
-</center>
-</body>
+      <%- flash.each do |name, msg| -%>
+        <%= content_tag :div, msg, :id => "flash_#{name}" %>
+      <%- end -%>
+      
+      <%- if show_title? -%>
+        <h1><%=h yield(:title) %></h1>
+      <%- end -%>
+      
+      <%= yield %>
+      </center>
+    </div>
+  </body>
 </html>
