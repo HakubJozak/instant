@@ -20,6 +20,15 @@ class Card < ActiveRecord::Base
     
     card
   end
+
+  def image_url
+    unless read_attribute(:image_url)
+      DeckCheck.update_card(self)
+      save
+    end
+
+    read_attribute(:image_url)
+  end
   
   def image
     self.image = read_attribute(:image) || download_image

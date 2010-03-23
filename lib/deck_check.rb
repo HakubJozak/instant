@@ -6,12 +6,14 @@ module DeckCheck
 
   CARDS_REGEXP = Regexp.new("<p>([0-9])+ <a href=\"(.*)\" onmouse.*>(.*)</a></p>")
   DECK_NAME_REGEXP = Regexp.new(".*<h1>(.*)<span.*</h1>.*")
-  IMAGE_REGEXP = Regexp.new("<img src=\"(/scans/.*)\".*/>")
+  IMAGE_REGEXP = Regexp.new("<img src=\".*(/scans/.*\.jpg)\".*")
   CARD_NAME_REGEXP = Regexp.new('<h1><a href=.*>(.*)</a>.*</h1>')
+
+
 
   def self.update_card(card)
     card.url, page = goto_url(card.url)
-    card.name = page.scan(CARD_NAME_REGEXP)[0][0]
+    #card.name = page.scan(CARD_NAME_REGEXP)[0][0]
     card.image_url = "http://magiccards.info" + page.scan(IMAGE_REGEXP)[0][0]
   end
 

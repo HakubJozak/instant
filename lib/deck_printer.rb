@@ -6,6 +6,7 @@ module DeckPrinter
 
   CARD_W = 63.mm
   CARD_H = 88.mm
+  PADDING = 0.3
 
   OPTIONS = {
       :page_layout => :portrait,
@@ -24,7 +25,7 @@ module DeckPrinter
         column = @count % 3
         row = @count / 3
         @count = (@count + 1) % 9
-        coordinates = [ column * (CARD_W + 5.mm), pdf.bounds.top - row * (CARD_H + 5.mm)]
+        coordinates = [ column * (CARD_W + PADDING.mm), pdf.bounds.top - row * (CARD_H + PADDING.mm)]
         pdf.image StringIO.new(card.image), :width => CARD_W, :height => CARD_H, :at => coordinates
         pdf.start_new_page if @count == 0
       end
