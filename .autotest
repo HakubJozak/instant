@@ -1,6 +1,0 @@
-# -*- ruby -*-
-
-require 'autotest-inotify'
-require 'redgreen/autotest'
-#require "test_notifier/autotest"
-require "test_notifier_autotest"
