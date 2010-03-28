@@ -2,7 +2,7 @@ require 'prawn/measurement_extensions'
 require "stringio" 
 
 
-module DeckPrinter
+class DeckPrinter
 
   CARD_W = 63.mm
   CARD_H = 88.mm
@@ -14,20 +14,30 @@ module DeckPrinter
       :right_margin => 5.mm,
       :top_margin => 5.mm,
       :bottom_margin => 5.mm,
-      :page_size => 'A4'
     }
 
-  def self.print(deck)
-    deck_pdf = Prawn::Document.new(OPTIONS) do |pdf|
-      @count = 0
+  def initialize(options = {})
+    @columns = options[:columns]
+    @rows = options[:rows]
+    @page_size = options[:page_size] || 'A4'
+    @page_layout = options[:page_layout] || :portrait
+  end
 
-      deck.cards.each do |card|
-        column = @count % 3
-        row = @count / 3
-        @count = (@count + 1) % 9
-        coordinates = [ column * (CARD_W + PADDING.mm), pdf.bounds.top - row * (CARD_H + PADDING.mm)]
-        pdf.image StringIO.new(card.image), :width => CARD_W, :height => CARD_H, :at => coordinates
-        pdf.start_new_page if @count == 0
+  def print(deck)
+    custom = { :page_size => @page_size, :page_layout => @page_layout }
+
+    deck_pdf = Prawn::Document.new(OPTIONS.merge(custom)) do |pdf|
+      deck.cards.each_slice(@rows * @columns).each do |page|
+        page.each_slice(@columns).each_with_index do |cards_in_row, row|
+          cards_in_row.each_with_index do |card, column|
+            puts "row: #{row}"
+            puts "column: #{column}"
+            coordinates = [ column * (CARD_W + PADDING.mm), pdf.bounds.top - row * (CARD_H + PADDING.mm)]
+            pdf.image StringIO.new(card.image), :width => CARD_W, :height => CARD_H, :at => coordinates
+          end
+        end
+
+        pdf.start_new_page
       end
     end
 

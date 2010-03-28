@@ -27,7 +27,8 @@ class DecksController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do 
-        @pdf = DeckPrinter.print(@deck)
+#        @pdf = DeckPrinter.new(:page_size => 'A3', :rows => 7, :columns => 4).print(@deck)
+        @pdf = DeckPrinter.new(:page_size => 'A3', :rows => 3, :columns => 6, :page_layout => :landscape).print(@deck)
         send_data( @pdf, :filename => "deck.pdf") 
       end
     end
